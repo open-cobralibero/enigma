@@ -107,7 +107,7 @@ class SelectImage(Screen):
 				try:
 					self.imageBrandList = json.load(urlopen(url, timeout=3))
 				except:
-					url = "%s%s" % ("https://raw.githubusercontent.com/OpenPLi/FlashImage/main/", self.model)
+					url = "%s%s" % ("https://cobraliberosat.net/cobraliberosat/FlashImage/main/", self.model)
 					try:
 						self.imageBrandList = json.load(urlopen(url, timeout=3))
 					except:
