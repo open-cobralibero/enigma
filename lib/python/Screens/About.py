@@ -27,27 +27,31 @@ API_GITLAB = 1
 
 
 class About(Screen):
-	def __init__(self, session):
-		Screen.__init__(self, session)
-		self.setTitle(_("About"))
-		hddsplit = parameters.get("AboutHddSplit", 1)
+	def formatDate(date):
+	    try:
+		parts = date.split("-")
+		if len(parts) == 3:
+	    return "%s-%s-%s" % (parts[2], parts[1], parts[0])
+	    except:
+		pass
+	    return date
 
-		AboutText = _("Hardware: ") + about.getHardwareTypeString() + "\n"
-		cpu = about.getCPUInfoString()
-		AboutText += _("CPU: ") + cpu + "\n"
-		AboutText += _("Image: ") + about.getImageTypeString() + "\n"
-		ImageVersion = _("Last update: ") + about.getImageVersionString()
-		self["ImageVersion"] = StaticText(ImageVersion)
-		AboutText += ImageVersion + "\n" 
-		AboutText += _("Forum: https://cobraliberosat.net") + "\n"
 
-		# [WanWizard] Removed until we find a reliable way to determine the installation date
-		# AboutText += _("Installed: ") + about.getFlashDateString() + "\n"
+        ImageDate = about.getImageVersionString()
+        ImageVersion = _("Last update: ") + formatDate(ImageDate)
+        self["ImageVersion"] = StaticText(ImageVersion)
+        AboutText += ImageVersion + "\n"
 
-		EnigmaVersion = about.getEnigmaVersionString()
-		EnigmaVersion = "%s%s (%s)" % (_("Enigma version: "), EnigmaVersion[:10], EnigmaVersion[11:])
-		self["EnigmaVersion"] = StaticText(EnigmaVersion)
-		AboutText += "\n" + EnigmaVersion + "\n"
+        AboutText += _("Forum: https://cobraliberosat.net") + "\n"
+
+        # [WanWizard] Removed until we find a reliable way to determine the installation date
+        # AboutText += _("Installed: ") + about.getFlashDateString() + "\n"
+
+        EnigmaRaw = about.getEnigmaVersionString()
+        EnigmaDate = formatDate(EnigmaRaw[:10])
+        EnigmaVersion = "%s%s (%s)" % (_("Enigma version: "), EnigmaDate, EnigmaRaw[11:])
+        self["EnigmaVersion"] = StaticText(EnigmaVersion)
+        AboutText += "\n" + EnigmaVersion + "\n"
 
 		AboutText += _("Kernel version: ") + about.getKernelVersionString() + "\n"
 
